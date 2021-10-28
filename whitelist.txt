@@ -1,1 +1,10 @@
+# Official domains
 discord.gift
+
+# .gift and .gifts domains in the top 1M Alexa ranking
+crediter.gift
+packedwithpurpose.gifts
+123movies.gift
+admiralwin.gift
+gol.gift
+newhome.gifts
