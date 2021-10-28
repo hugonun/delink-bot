@@ -27,5 +27,8 @@ async def on_message(message):
   if 0==1:
     await ctx.send('Possible scam link has been deleted!', delete_after=5)
   
+with open('token.txt', 'r') as file:
+    dtoken = file.read().replace('\n', '')
 
-bot.run('')
+
+bot.run(dtoken)
