@@ -7,6 +7,6 @@ A Discord bot to combat phishing links for Steam trades and Discord gifts.
 `python3 -m pip install tldextract`
 
 ## Setup
-Create the file `token.txt` and add your token inside it.
+Create the file `token.txt` and add your Discord token inside it.
 
 Then run the bot using `python3 init.py`.
