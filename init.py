@@ -1,6 +1,7 @@
 from re import findall
 import discord
 from discord.ext import commands
+import tldextract
 
 from functions import *
 
@@ -11,6 +12,16 @@ intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix='!d ', help_command=None, description=description, intents=intents)
+
+# Whitelist and blacklist
+with open('whitelist.txt', 'r') as file:
+  whitelist = file.read().splitlines()
+
+with open('blacklist.txt', 'r') as file:
+  blacklist = file.read().splitlines()
+
+whitelist = [item for item in whitelist if not(item == '' or item.startswith('#'))]
+blacklist = [item for item in blacklist if not(item == '' or item.startswith('#'))]
 
 @bot.event
 async def on_ready():
@@ -26,13 +37,18 @@ async def ping(ctx):
 @bot.event
 async def on_message(message):
   # read blacklist.txt and whitelist.txt, and filter from there
-  # remove all domains using .gift TLD
   urllist = findurls(message.content)
-  print(urllist)
-  
-  if 0==1:
-    await ctx.send('Possible scam link has been deleted!', delete_after=5)
-    
+  if urllist:
+    for url in urllist:
+      urlextract = tldextract.extract(url)
+      # Filter by TLD
+      if urlextract.suffix in ['gift','gifts']:
+        if urlextract.registered_domain not in whitelist:
+          await deletemsg(message)
+      # Filter by blacklist
+      if urlextract.registered_domain in blacklist:
+        if urlextract.registered_domain not in whitelist:
+          await deletemsg(message)
 
 # Token
 with open('token.txt', 'r') as file:
