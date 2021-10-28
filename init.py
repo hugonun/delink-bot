@@ -24,7 +24,7 @@ async def ping(ctx):
 async def on_message(message):
   # read blacklist.txt and whitelist.txt, and filter from there
   # remove all domains using .gift TLD
-  if 0=1:
+  if 0==1:
     await ctx.send('Possible scam link has been deleted!', delete_after=5)
   
 
