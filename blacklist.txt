@@ -1,1 +1,1 @@
-# Note: All domains ending with .gift or .gifts are automatically blacklisted and don't need to be added here.
+# Note: Domains using .gift or .gifts TLD should also get listed here, despite there being a TLD filter.
