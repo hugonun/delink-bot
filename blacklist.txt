@@ -1,1 +1,9 @@
 # Note: Domains using .gift or .gifts TLD should also get listed here, despite there being a TLD filter.
+dissord.gift
+discordn.gift
+discordi.gift
+discordt.gift
+discord-cpp.com
+discord-app.net
+discorcll.online
+discorcl.link
