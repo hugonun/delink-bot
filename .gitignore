@@ -130,3 +130,6 @@ dmypy.json
 
 # Secret Token
 token.txt
+
+# database
+delink.db
