@@ -2,6 +2,7 @@
 discord.gift
 discord.gg
 discord.com
+discordapp.com
 
 # .gift and .gifts domains in the top 1M Alexa ranking
 crediter.gift
