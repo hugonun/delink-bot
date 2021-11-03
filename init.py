@@ -2,6 +2,7 @@ import discord
 from discord import client
 from discord.ext import commands
 import tldextract
+from paginator import Pag
 
 from functions import *
 
@@ -14,6 +15,23 @@ intents.members = True
 bot = commands.Bot(command_prefix='!d ', help_command=None, description=description, intents=intents)
 
 setupdb()
+@bot.event
+async def on_reaction_add(reaction, user):
+  
+  print("adding reaction")
+
+@bot.event
+async def on_reaction_remove(reaction, user):
+  print("removing reaction")
+
+@bot.event
+async def on_raw_reaction_add(payload):
+  pass
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+  pass
+
 
 # Whitelist and blacklist
 with open('whitelist.txt', 'r') as file:
@@ -72,13 +90,45 @@ async def removelink(ctx, table:str, *, msg):
 
 @bot.command()
 async def viewblacklist(ctx):
-  embed = discord.Embed(author=ctx.message.author, colour=discord.Colour.red(), title='Viewing **blacklisted** urls')
   urls = retriveurls(ctx.guild.id,'blacklist')
   if not urls:
     urls = ['Currently no blacklisted urls']
-  embed.description = '**Custom blacklist:** \n'+'\n'.join([item[0] for item in urls])
-  embed.description += '\n**Global blacklist:** \n'+'\n'.join(blacklist)
-  await ctx.send(embed=embed)
+  
+  pages=[]
+  SIZED_CHUNKS = 10
+  cchunk = [urls[i:i + SIZED_CHUNKS] for i in range(0, len(urls), SIZED_CHUNKS)]
+  for chunk in cchunk:
+    chunk.insert(0,'**Custom blacklist:**')
+    contenttoadd = '\n'.join(chunk)
+    pages.append(contenttoadd)
+  
+  gchunk = [blacklist[i:i + SIZED_CHUNKS] for i in range(0, len(blacklist), SIZED_CHUNKS)]
+  for chunk in gchunk:
+    chunk.insert(0,'**Global blacklist:**')
+    contenttoadd = '\n'.join(chunk)
+    pages.append(contenttoadd)
+  await Pag(title='Viewing **blacklisted** urls', color=discord.Colour.green(), entries=pages, length=1).start(ctx)
+
+@bot.command()
+async def viewwhitelist(ctx):
+  urls = retriveurls(ctx.guild.id,'whitelist')
+  if not urls:
+    urls = ['Currently no whitelisted urls']
+  
+  pages=[]
+  SIZED_CHUNKS = 10
+  cchunk = [urls[i:i + SIZED_CHUNKS] for i in range(0, len(urls), SIZED_CHUNKS)]
+  for chunk in cchunk:
+    chunk.insert(0,'**Custom whitelist:**')
+    contenttoadd = '\n'.join(chunk)
+    pages.append(await Pag(client=bot, pages=pages).createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
+  
+  gchunk = [whitelist[i:i + SIZED_CHUNKS] for i in range(0, len(whitelist), SIZED_CHUNKS)]
+  for chunk in gchunk:
+    chunk.insert(0,'**Global whitelist:**')
+    contenttoadd = '\n'.join(chunk)
+    pages.append(await Pag(client=bot, pages=pages).createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
+  await Pag(client=bot, pages=pages).start(ctx=ctx)
 
 @bot.event
 async def on_message(message):
