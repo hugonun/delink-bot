@@ -1,10 +1,22 @@
 import re
 import sqlite3
 
-import tldextract
-from discord.ext.commands.core import guild_only
 con = sqlite3.connect('delink.db')
 cur = con.cursor()
+
+def chunkarray(array: list, size: int):
+    return [array[i:i + size] for i in range(0, len(array), size)]
+    
+def whattabletoedit(table):
+  blacklistOptions=['blacklist','b','bl','blist','black']
+  whitelistOptions=['whitelist','w','wl','wlist','white']
+
+  if table in blacklistOptions:
+    return 'blacklist'
+  elif table in whitelistOptions:
+    return 'whitelist'
+  else:
+    return 'That is not a vaild option please say {0} to blacklist a url or {1} to white list a url'.format(", ".join(blacklistOptions[:-1]) +" or "+blacklistOptions[-1], ", ".join(whitelistOptions[:-1]) +" or "+whitelistOptions[-1])
 
 def findurls(s):
   regex = r"(?i)\b(((https?|ftp|smtp):\/\/)?(www.)?[a-zA-Z0-9_.-]+\.[a-zA-Z0-9_.-]+(\/[a-zA-Z0-9#]+\/?)*/*)$"

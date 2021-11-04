@@ -1,5 +1,4 @@
 import discord
-from discord import client
 from discord.ext import commands
 import tldextract
 from paginator import Pag
@@ -26,6 +25,17 @@ with open('blacklist.txt', 'r') as file:
 whitelist = [item for item in whitelist if not(item == '' or item.startswith('#'))]
 blacklist = [item for item in blacklist if not(item == '' or item.startswith('#'))]
 
+
+PAGES=[]
+SIZED_CHUNKS = 10
+pagniator = Pag(client=bot, pages=PAGES)
+
+async def chunktopage(chunk: list, color: discord.Colour, title: str, insertbefore: str):
+  for tempchunk in chunk:
+    tempchunk.insert(0,insertbefore)
+    contenttoadd = '\n'.join(tempchunk)
+    PAGES.append(await pagniator.createPage(title=title,description=contenttoadd,colour=color))
+    
 @bot.event
 async def on_ready():
   print(f'Logged in as {bot.user} (ID: {bot.user.id})')
@@ -39,14 +49,10 @@ async def ping(ctx):
 
 @bot.command()
 async def addlink(ctx, table:str, msg):
-  blacklistOptions=['blacklist','b','bl','blist','black']
-  whitelistOptions=['whitelist','w','wl','wlist','white']
-  if table in blacklistOptions:
-    tabletoedit='blacklist'
-  elif table in whitelistOptions:
-    tabletoedit='whitelist'
-  else:
-    return await ctx.send('That is not a vaild option please say {0} to blacklist a url or {1} to white list a url'.format(", ".join(blacklistOptions[:-1]) +" or "+blacklistOptions[-1], ", ".join(whitelistOptions[:-1]) +" or "+whitelistOptions[-1]))
+  tabletoedit = whattabletoedit(table=table)
+  if tabletoedit != 'blacklist' and tabletoedit != 'whitelist':
+    return await ctx.send(tabletoedit)
+  
   url = findurls(msg)[0]
   if not url:
     await ctx.send('No valid URL has been given.')
@@ -56,14 +62,10 @@ async def addlink(ctx, table:str, msg):
 
 @bot.command()
 async def removelink(ctx, table:str, *, msg):
-  blacklistOptions=['blacklist','b','bl','blist','black']
-  whitelistOptions=['whitelist','w','wl','wlist','white']
-  if table in blacklistOptions:
-    tabletoedit='blacklist'
-  elif table in whitelistOptions:
-    tabletoedit='whitelist'
-  else:
-    return await ctx.send('That is not a vaild option please say {0} to blacklist a url or {1} to white list a url'.format(", ".join(blacklistOptions[:-1]) +" or "+blacklistOptions[-1], ", ".join(whitelistOptions[:-1]) +" or "+whitelistOptions[-1]))
+  tabletoedit = whattabletoedit(table=table)
+  if tabletoedit != 'blacklist' and tabletoedit != 'whitelist':
+    return await ctx.send(tabletoedit)
+
   url = findurls(msg)[0]
   if not url:
     await ctx.send('No valid URL has been given.')
@@ -73,48 +75,32 @@ async def removelink(ctx, table:str, *, msg):
 
 @bot.command()
 async def viewblacklist(ctx):
+  PAGES.clear()
   urls = retriveurls(ctx.guild.id,'blacklist')
+
   if not urls:
     urls = ['Currently no blacklisted urls']
   
-  pages=[]
-  SIZED_CHUNKS = 10
-  cchunk = [urls[i:i + SIZED_CHUNKS] for i in range(0, len(urls), SIZED_CHUNKS)]
-  for chunk in cchunk:
-    chunk.insert(0,'**Custom blacklist:**')
-    contenttoadd = '\n'.join(chunk)
-    pages.append(contenttoadd)
+  cchunk = chunkarray(array=urls, size=SIZED_CHUNKS)
+  gchunk = chunkarray(array=blacklist, size=SIZED_CHUNKS)
+  await chunktopage(chunk=cchunk, color=discord.Colour.red(),title="Viewing **blacklisted** urls", insertbefore="**Custom blacklist:**")
+  await chunktopage(chunk=gchunk, color=discord.Colour.red(),title="Viewing **blacklisted** urls", insertbefore="**Global blacklist:**")
+  pagniator.set_pages(pages=PAGES)
+  await pagniator.start(ctx=ctx)
   
-  gchunk = [blacklist[i:i + SIZED_CHUNKS] for i in range(0, len(blacklist), SIZED_CHUNKS)]
-  for chunk in gchunk:
-    chunk.insert(0,'**Global blacklist:**')
-    contenttoadd = '\n'.join(chunk)
-    pages.append(contenttoadd)
-  await Pag(title='Viewing **blacklisted** urls', color=discord.Colour.green(), entries=pages, length=1).start(ctx)
-
 @bot.command()
 async def viewwhitelist(ctx):
+  PAGES.clear()
   urls = retriveurls(ctx.guild.id,'whitelist')
+
   if not urls:
     urls = ['Currently no whitelisted urls']
   
-  pages=[]
-  SIZED_CHUNKS = 10
-  cchunk = [urls[i:i + SIZED_CHUNKS] for i in range(0, len(urls), SIZED_CHUNKS)]
-  for chunk in cchunk:
-    chunk.insert(0,'**Custom whitelist:**')
-    contenttoadd = '\n'.join(chunk)
-    pagniator = Pag(client=bot, pages=pages)
-    pages.append(await pagniator.createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
-  
-  gchunk = [whitelist[i:i + SIZED_CHUNKS] for i in range(0, len(whitelist), SIZED_CHUNKS)]
-  for chunk in gchunk:
-    chunk.insert(0,'**Global whitelist:**')
-    contenttoadd = '\n'.join(chunk)
-    pagniator.set_pages(pages=pages)
-    pages.append(await pagniator.createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
-
-  pagniator.set_pages(pages=pages)
+  cchunk = chunkarray(array=urls, size=SIZED_CHUNKS)
+  gchunk = chunkarray(array=blacklist, size=SIZED_CHUNKS)
+  await chunktopage(chunk=cchunk, color=discord.Colour.green(),title="Viewing **whitelisted** urls", insertbefore="**Custom whitelist:**")
+  await chunktopage(chunk=gchunk, color=discord.Colour.green(),title="Viewing **whitelisted** urls", insertbefore="**Global whitelist:**")
+  pagniator.set_pages(pages=PAGES)
   await pagniator.start(ctx=ctx)
 
 @bot.event
@@ -136,7 +122,6 @@ async def on_message(message):
       if urlextract.registered_domain in blacklist or checkurl(message.guild.id, urlextract.registered_domain, 'blacklist'):
         if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
           await deletemsg(message)
-
 
 # Token
 with open('token.txt', 'r') as file:
