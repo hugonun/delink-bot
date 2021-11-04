@@ -31,11 +31,11 @@ PAGES=[]
 SIZED_CHUNKS = 10
 pagniator = Pag(client=bot, pages=PAGES)
 
-async def chunktopage(chunk: list, color: discord.Colour, title: str, insertbefore: str):
+async def chunktopage(chunk: list, color: discord.Color, title: str, insertbefore: str):
   for tempchunk in chunk:
     tempchunk.insert(0,insertbefore)
     contenttoadd = '\n'.join(tempchunk)
-    PAGES.append(await pagniator.createPage(title=title,description=contenttoadd,colour=color))
+    PAGES.append(await pagniator.createPage(title=title,description=contenttoadd,color=color))
     
 @bot.event
 async def on_ready():
@@ -97,30 +97,32 @@ async def removelink_error(ctx, error):
 @bot.command()
 async def viewblacklist(ctx):
   PAGES.clear()
-  urls = retriveurls(ctx.guild.id,'blacklist')
+  #urls = retriveurls(ctx.guild.id,'blacklist')
+  urls = [item for t in retriveurls(ctx.guild.id,'blacklist') for item in t]
 
   if not urls:
     urls = ['Currently no blacklisted urls']
   
   cchunk = chunkarray(array=urls, size=SIZED_CHUNKS)
   gchunk = chunkarray(array=blacklist, size=SIZED_CHUNKS)
-  await chunktopage(chunk=cchunk, color=discord.Colour.red(),title="Viewing **blacklisted** urls", insertbefore="**Custom blacklist:**")
-  await chunktopage(chunk=gchunk, color=discord.Colour.red(),title="Viewing **blacklisted** urls", insertbefore="**Global blacklist:**")
+  await chunktopage(chunk=cchunk, color=discord.Color.red(),title="Viewing **blacklisted** urls", insertbefore="**Custom blacklist:**")
+  await chunktopage(chunk=gchunk, color=discord.Color.red(),title="Viewing **blacklisted** urls", insertbefore="**Global blacklist:**")
   pagniator.set_pages(pages=PAGES)
   await pagniator.start(ctx=ctx)
   
 @bot.command()
 async def viewwhitelist(ctx):
   PAGES.clear()
-  urls = retriveurls(ctx.guild.id,'whitelist')
+  #urls = retriveurls(ctx.guild.id,'whitelist')
+  urls = [item for t in retriveurls(ctx.guild.id,'whitelist') for item in t]
 
   if not urls:
     urls = ['Currently no whitelisted urls']
   
   cchunk = chunkarray(array=urls, size=SIZED_CHUNKS)
   gchunk = chunkarray(array=blacklist, size=SIZED_CHUNKS)
-  await chunktopage(chunk=cchunk, color=discord.Colour.green(),title="Viewing **whitelisted** urls", insertbefore="**Custom whitelist:**")
-  await chunktopage(chunk=gchunk, color=discord.Colour.green(),title="Viewing **whitelisted** urls", insertbefore="**Global whitelist:**")
+  await chunktopage(chunk=cchunk, color=discord.Color.green(),title="Viewing **whitelisted** urls", insertbefore="**Custom whitelist:**")
+  await chunktopage(chunk=gchunk, color=discord.Color.green(),title="Viewing **whitelisted** urls", insertbefore="**Global whitelist:**")
   pagniator.set_pages(pages=PAGES)
   await pagniator.start(ctx=ctx)
 

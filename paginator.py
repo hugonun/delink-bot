@@ -52,12 +52,12 @@ class Pag():
                 if self._currentpage != previous_page:
                     await msg.edit(embed=self._pages[self._currentpage])
 
-    async def createPage(self, title: str, description: str, colour: discord.Colour):
+    async def createPage(self, title: str, description: str, color: discord.Color):
         embed = discord.Embed()
         if title:
             embed.title = title
         if description:
             embed.description = description  
-        if colour:
-            embed.colour = colour
+        if color:
+            embed.color = color
         return embed
