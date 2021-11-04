@@ -15,23 +15,6 @@ intents.members = True
 bot = commands.Bot(command_prefix='!d ', help_command=None, description=description, intents=intents)
 
 setupdb()
-@bot.event
-async def on_reaction_add(reaction, user):
-  
-  print("adding reaction")
-
-@bot.event
-async def on_reaction_remove(reaction, user):
-  print("removing reaction")
-
-@bot.event
-async def on_raw_reaction_add(payload):
-  pass
-
-@bot.event
-async def on_raw_reaction_remove(payload):
-  pass
-
 
 # Whitelist and blacklist
 with open('whitelist.txt', 'r') as file:
@@ -121,14 +104,18 @@ async def viewwhitelist(ctx):
   for chunk in cchunk:
     chunk.insert(0,'**Custom whitelist:**')
     contenttoadd = '\n'.join(chunk)
-    pages.append(await Pag(client=bot, pages=pages).createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
+    pagniator = Pag(client=bot, pages=pages)
+    pages.append(await pagniator.createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
   
   gchunk = [whitelist[i:i + SIZED_CHUNKS] for i in range(0, len(whitelist), SIZED_CHUNKS)]
   for chunk in gchunk:
     chunk.insert(0,'**Global whitelist:**')
     contenttoadd = '\n'.join(chunk)
-    pages.append(await Pag(client=bot, pages=pages).createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
-  await Pag(client=bot, pages=pages).start(ctx=ctx)
+    pagniator.set_pages(pages=pages)
+    pages.append(await pagniator.createPage(title='Viewing **whitelisted** urls',description=contenttoadd,colour=discord.Colour.green()))
+
+  pagniator.set_pages(pages=pages)
+  await pagniator.start(ctx=ctx)
 
 @bot.event
 async def on_message(message):
