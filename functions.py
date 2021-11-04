@@ -36,11 +36,11 @@ def setupdb():
 
   con.commit()
 
-def inserturls(guild_id, url, table):
+def inserturl(guild_id, url, table):
   cur.execute('''INSERT OR IGNORE INTO %s VALUES (?,?)''' % (table), (guild_id,url))
   con.commit()
       
-def deleteurls(guild_id, url, table):
+def deleteurl(guild_id, url, table):
   cur.execute('''DELETE FROM %s WHERE url = ? AND guild_id = ?''' % (table), (guild_id,url))
   con.commit()
 

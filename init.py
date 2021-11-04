@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands.core import has_guild_permissions
 import tldextract
 from paginator import Pag
 
@@ -48,6 +49,7 @@ async def ping(ctx):
   await ctx.send('Pong!')
 
 @bot.command()
+@commands.check_any(has_guild_permissions(manage_webhooks=True),has_guild_permissions(manage_guild=True), has_guild_permissions(administrator=True))
 async def addlink(ctx, table:str, msg):
   tabletoedit = whattabletoedit(table=table)
   if tabletoedit != 'blacklist' and tabletoedit != 'whitelist':
@@ -57,11 +59,21 @@ async def addlink(ctx, table:str, msg):
   if not url:
     await ctx.send('No valid URL has been given.')
   else:
-    inserturls(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit)
+    inserturl(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit)
     await ctx.send('URL has been added!')
 
+@addlink.error
+async def addlink_error(ctx, error):
+  if isinstance(error, commands.MissingRequiredArgument):
+    await ctx.send('To use the removelink command do: {0}removelink <blacklist or whitelist> <url>')
+  elif isinstance(error, commands.NoPrivateMessage):
+    await ctx.send('This command may not be used in dms')
+  elif isinstance(error, commands.MissingPermissions):
+    await ctx.send('You are missing the requirred permissions')
+
 @bot.command()
-async def removelink(ctx, table:str, *, msg):
+@commands.check_any(has_guild_permissions(manage_webhooks=True),has_guild_permissions(manage_guild=True), has_guild_permissions(administrator=True))
+async def removelink(ctx, table:str, msg):
   tabletoedit = whattabletoedit(table=table)
   if tabletoedit != 'blacklist' and tabletoedit != 'whitelist':
     return await ctx.send(tabletoedit)
@@ -70,8 +82,17 @@ async def removelink(ctx, table:str, *, msg):
   if not url:
     await ctx.send('No valid URL has been given.')
   else:
-    deleteurls(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit)
+    deleteurl(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit)
     await ctx.send('URL has been deleted!')
+  
+@removelink.error
+async def removelink_error(ctx, error):
+  if isinstance(error, commands.MissingRequiredArgument):
+    await ctx.send('To use the removelink command do: {0}removelink <blacklist or whitelist> <url>')
+  elif isinstance(error, commands.NoPrivateMessage):
+    await ctx.send('This command may not be used in dms')
+  elif isinstance(error, commands.MissingPermissions):
+    await ctx.send('You are missing the requirred permissions')
 
 @bot.command()
 async def viewblacklist(ctx):
@@ -118,7 +139,6 @@ async def on_message(message):
           if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
             await deletemsg(message)
       # Filter by blacklist
-      print(checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'))
       if urlextract.registered_domain in blacklist or checkurl(message.guild.id, urlextract.registered_domain, 'blacklist'):
         if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
           await deletemsg(message)
