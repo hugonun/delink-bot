@@ -11,5 +11,3 @@ Create the file `token.txt` and add your Discord token inside it.
 
 Then run the bot using `python3 init.py`.
 
-create .data directory for database file to be stored 
-example filepath: `.data/delink.db`
