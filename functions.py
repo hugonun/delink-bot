@@ -1,7 +1,12 @@
 import re
 import sqlite3
+import os
 
-con = sqlite3.connect('delink.db')
+# make directory for database if it doesnt exist already
+path = '{0}/.data/'.format(os.getcwd())
+os.makedirs(path, exist_ok=True)
+
+con = sqlite3.connect('.data/delink.db')
 cur = con.cursor()
 
 def chunkarray(array: list, size: int):
