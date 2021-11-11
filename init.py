@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 import tldextract
-from paginator import Pag
-from functions import *
+from utils.paginator import Pag
+from utils.functions import *
 import os
 
 description = '''Link filter bot.'''

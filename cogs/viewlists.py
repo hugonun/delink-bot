@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from functions import *
+from utils.functions import *
 
 from init import whitelist, blacklist, PAGES, SIZED_CHUNKS, pagniator
 

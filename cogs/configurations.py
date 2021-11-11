@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands.core import has_guild_permissions
-from functions import *
+from utils.functions import *
 import tldextract
 
 class configurations(commands.Cog):
