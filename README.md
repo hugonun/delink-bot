@@ -15,3 +15,6 @@ Create the file `token.txt` and add your Discord token inside it.
 
 Then run the bot using `python3 init.py`.
 
+## For fast setup and run bot after
+
+`python run_setup.py`
