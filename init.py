@@ -1,18 +1,18 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands.core import has_guild_permissions
 import tldextract
 from paginator import Pag
 from functions import *
 import os
 
-description = '''Link filter bot.
-'''
+description = '''Link filter bot.'''
 
 intents = discord.Intents.default()
 intents.members = True
-
-bot = commands.Bot(command_prefix='!d ', help_command=None, description=description, intents=intents)
+help_command = commands.DefaultHelpCommand(
+    no_category = 'Need some help?'
+)
+bot = commands.Bot(command_prefix='!d ', help_command= help_command, description=description, intents=intents)
 
 setupdb()
 
@@ -36,24 +36,6 @@ async def on_ready():
   print('------')
   game = discord.Game("word.exe")
   await bot.change_presence(status=discord.Status.online, activity=game)
-
-# @bot.command()
-# async def load(ctx, extension):
-#   bot.load_extension(f'cogs.{extension}')
-#   await ctx.send(f'{extension} has been loaded.')
-
-# @bot.command()
-# async def unload(ctx, extension):
-#   bot.unload_extension(f'cogs.{extension}')
-#   await ctx.send(f'{extension} has been unloaded.')
-
-# @bot.command()
-# async def _reload(ctx, extension):
-#   try:
-#     bot.unload_extension(f'cogs.{extension}')
-#     bot.load_extension(f'cogs.{extension}')
-#   except Exception as e:
-#     await ctx.send('An error occurred.')
 
 for filename in os.listdir('./cogs'):
   if filename.endswith('.py'):

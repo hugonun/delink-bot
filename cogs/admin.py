@@ -42,4 +42,5 @@ class Admin(commands.Cog):
             await ctx.send('\N{OK HAND SIGN}')
 
 def setup(bot):
+    """Add class as a cog"""
     bot.add_cog(Admin(bot))
