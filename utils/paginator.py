@@ -9,10 +9,11 @@ class Pag():
         self._client = client
 
     def set_pages(self, pages):
+        """Dynamically set the pages"""
         self._pages = pages
     
     async def start(self, ctx):
-
+        """Create a reaction listener and handle reaction responses"""
         msg = await ctx.send(embed=self._pages[0])
 
         for button in self._buttons:
@@ -53,6 +54,7 @@ class Pag():
                     await msg.edit(embed=self._pages[self._currentpage])
 
     async def createPage(self, title: str, description: str, color: discord.Color):
+        """Create and return a formatted Embed"""
         embed = discord.Embed()
         if title:
             embed.title = title

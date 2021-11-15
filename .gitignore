@@ -133,3 +133,6 @@ token.txt
 
 # database
 delink.db
+
+# directories
+.data
