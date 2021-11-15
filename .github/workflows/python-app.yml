@@ -33,4 +33,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run application
       run: |
-        python init.py
+        if [ -f token.txt ]; then python3 run_setup.py; else python3 init.py; fi
