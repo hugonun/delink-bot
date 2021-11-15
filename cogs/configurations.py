@@ -30,16 +30,16 @@ class configurations(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f'To use the removelink command do: {self.bot.command_prefix}removelink <blacklist or whitelist> <url>')
         elif isinstance(error, commands.NoPrivateMessage):
-            await ctx.send('This command may not be used in dms')
+            await ctx.send('This command may not be used in DMs.')
         elif isinstance(error, commands.MissingPermissions):
-            await ctx.send('You are missing the requirred permissions')
+            await ctx.send('You are missing the required permissions.')
     
     @commands.command()
     @commands.check_any(has_guild_permissions(manage_webhooks=True),has_guild_permissions(manage_guild=True), has_guild_permissions(administrator=True))
     async def addlink(self, ctx, table:str, msg):
         """Add a link to the custom white/black list"""
         tabletoedit = whattabletoedit(table=table)
-        if tabletoedit != 'blacklist' and tabletoedit != 'whitelist':
+        if tabletoedit != 'blacklist' and not tabletoedit != 'whitelist':
             return await ctx.send(tabletoedit)
         
         url = findurls(msg)[0]
@@ -53,11 +53,11 @@ class configurations(commands.Cog):
     async def addlink_error(self, ctx, error):
         """Handle errors thrown from the addlink command"""
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f'To use the removelink command do: {self.bot.command_prefix}removelink <blacklist or whitelist> <url>')
+            await ctx.send(f'To use the addlink command do: {self.bot.command_prefix}addlink <blacklist or whitelist> <url>')
         elif isinstance(error, commands.NoPrivateMessage):
-            await ctx.send('This command may not be used in dms')
+            await ctx.send('This command may not be used in DMs.')
         elif isinstance(error, commands.MissingPermissions):
-            await ctx.send('You are missing the requirred permissions')
+            await ctx.send('You are missing the required permissions.')
 
 def setup(bot):
     """Add class as a cog"""

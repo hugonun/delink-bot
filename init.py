@@ -26,10 +26,10 @@ with open('blacklist.txt', 'r') as file:
 whitelist = [item for item in whitelist if not(item == '' or item.startswith('#'))]
 blacklist = [item for item in blacklist if not(item == '' or item.startswith('#'))]
 
-PAGES=[]
-SIZED_CHUNKS = 10
-pagniator = Pag(client=bot, pages=PAGES)
-    
+#################
+### Bot event ###
+#################
+
 @bot.event
 async def on_ready():
   print(f'Logged in as {bot.user} (ID: {bot.user.id})')

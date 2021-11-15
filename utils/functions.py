@@ -26,13 +26,13 @@ def whattabletoedit(table):
     return 'That is not a vaild option please say {0} to blacklist a url or {1} to white list a url'.format(", ".join(blacklistOptions[:-1]) +" or "+blacklistOptions[-1], ", ".join(whitelistOptions[:-1]) +" or "+whitelistOptions[-1])
 
 def findurls(s):
-  """Use a regex to pull any url from a message"""
+  """Use a regex to pull URLs from a message"""
   regex = r"(?i)\b(((https?|ftp|smtp):\/\/)?(www.)?[a-zA-Z0-9_.-]+\.[a-zA-Z0-9_.-]+(\/[a-zA-Z0-9#]+\/?)*/*)$"
   url = re.findall(regex,s)
   return [x[0] for x in url]
 
 async def deletemsg(message):
-  """Delete any message"""
+  """Delete specified message"""
   await message.delete()
   await message.channel.send('WARNING: Your message has been deleted for containing a possible scam URL.', delete_after=5)
 
@@ -47,21 +47,21 @@ def setupdb():
   con.commit()
 
 def inserturl(guild_id, url, table):
-  """Insert a url into the specified table/list. EX: blacklist or whitelist"""
+  """Insert a URL into the specified table. EX: blacklist or whitelist"""
   cur.execute('''INSERT OR IGNORE INTO %s VALUES (?,?)''' % (table), (guild_id,url))
   con.commit()
       
 def deleteurl(guild_id, url, table):
-  """Delete a url from the specified table/list. EX: blacklist or whitelist"""
+  """Delete a URL from the specified table. EX: blacklist or whitelist"""
   cur.execute('''DELETE FROM %s WHERE url = ? AND guild_id = ?''' % (table), (guild_id,url))
   con.commit()
 
 def retriveurls(guild_id, table):
-  """Retrieve all urls from the specified table/list. EX: blacklist or whitelist"""
+  """Retrieve all URLs from the specified table. EX: blacklist or whitelist"""
   cur.execute('''SELECT url FROM %s WHERE guild_id = ?''' % (table), (guild_id,))
   return cur.fetchall()
 
 def checkurl(guild_id, url, table):
-  """Check if a url is in local white/black list"""
+  """Check if a URL is in the white/black list table"""
   cur.execute('''SELECT url FROM %s WHERE guild_id = ? AND url = ?''' % (table), (guild_id,url))
   return cur.fetchone()
