@@ -2,7 +2,7 @@ import asyncio
 import discord
 
 class Pag():
-    def __init__(self, client, pages=[]):
+    def __init__(self, client, pages):
         self.buttons = [u"\u23EA", u"\u2B05", "⏹️", u"\u27A1", u"\u23E9"]
         self.currentpage = 0
         self.pages = pages

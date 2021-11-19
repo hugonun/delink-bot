@@ -15,7 +15,7 @@ class Viewlists(commands.Cog):
     @commands.command(aliases=['viewblacklist', 'bl', 'blist'])
     async def blacklist(self, ctx):
         """View the current blacklisted links, globally and local."""
-        paginator = Pag(client=self.bot)
+        paginator = Pag(client=self.bot, pages=[])
 
         urls = [item for t in retriveurls(ctx.guild.id,'blacklist') for item in t]
 
@@ -31,7 +31,7 @@ class Viewlists(commands.Cog):
     @commands.command(aliases=['viewwhitelist', 'wl', 'wlist'])
     async def whitelist(self, ctx):
         """View the current whitelisted links, globally and local."""
-        paginator = Pag(client=self.bot)
+        paginator = Pag(client=self.bot, pages=[])
 
         urls = [item for t in retriveurls(ctx.guild.id,'whitelist') for item in t]
 
