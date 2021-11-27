@@ -1,6 +1,10 @@
 # delink-bot
 A Discord bot to combat phishing links for Steam trades and Discord gifts.
 
+## Invite link
+
+https://discord.com/oauth2/authorize?client_id=903114852631969802&scope=bot&permissions=8
+
 ## Requirement
 `python3 -m pip install -U discord.py`
 
