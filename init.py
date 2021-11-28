@@ -16,15 +16,11 @@ bot = commands.Bot(command_prefix='!d ', help_command= help_command, description
 
 setupdb()
 
-# Whitelist and blacklist
+# Whitelist TODO: Move it out
 with open('whitelist.txt', 'r') as file:
   whitelist = file.read().splitlines()
 
-with open('blacklist.txt', 'r') as file:
-  blacklist = file.read().splitlines()
-
 whitelist = [item for item in whitelist if not(item == '' or item.startswith('#'))]
-blacklist = [item for item in blacklist if not(item == '' or item.startswith('#'))]
 
 #################
 ### Bot event ###
@@ -56,7 +52,8 @@ async def on_message(message):
           if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
             await deletemsg(message)
       # Filter by blacklist
-      if urlextract.registered_domain in blacklist or checkurl(message.guild.id, urlextract.registered_domain, 'blacklist'):
+      checkblacklisturl(message.guild.id,url)
+      if checkblacklisturl(message.guild.id,url):
         if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
           await deletemsg(message)
 

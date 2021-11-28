@@ -1,6 +1,8 @@
 import re
 import sqlite3
 import os
+import tldextract
+import requests
 
 # make directory for database if it doesnt exist already
 path = '{0}/.data/'.format(os.getcwd())
@@ -8,6 +10,20 @@ os.makedirs(path, exist_ok=True)
 
 con = sqlite3.connect('.data/delink.db')
 cur = con.cursor()
+
+# temporary copy, TODO: move to separate file
+with open('whitelist.txt', 'r') as file:
+  whitelist = file.read().splitlines()
+
+with open('blacklist.txt', 'r') as file:
+  blacklist = file.read().splitlines()
+
+whitelist = [item for item in whitelist if not(item == '' or item.startswith('#'))]
+blacklist = [item for item in blacklist if not(item == '' or item.startswith('#'))]
+
+r = requests.get('https://api.hyperphish.com/gimme-domains')
+if r.status_code == 200:
+  blacklist = blacklist + r.json()
 
 def chunkarray(array: list, size: int):
   """Return a list of specified sized lists from a list"""
@@ -65,3 +81,28 @@ def checkurl(guild_id, url, table):
   """Check if a URL is in the white/black list table"""
   cur.execute('''SELECT url FROM %s WHERE guild_id = ? AND url = ?''' % (table), (guild_id,url))
   return cur.fetchone()
+
+def checkblacklisturl(guild_id, url):
+  urlextract = tldextract.extract(url)
+  # Check registered domain
+  if urlextract.registered_domain in blacklist:
+    return True
+  # Check subdomains
+  elif urlextract.subdomain and not urlextract.subdomain == "www":
+    suburl = urlextract.subdomain.split('.')
+    if suburl[0] == 'www':
+      suburl.pop(0)
+    suburl.reverse()
+    oldsub = '.'
+    for sub in suburl:
+      urltocheck = sub + oldsub + urlextract.registered_domain
+      oldsub = '.' + sub + oldsub
+      if urltocheck in blacklist:
+        return True
+  # Check in DB (TODO: Check subdomains too)
+  elif checkurl(guild_id, url, 'blacklist'):
+    return True
+  # Pass
+  else:
+    return False
+
