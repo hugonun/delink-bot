@@ -34,8 +34,8 @@ blacklist = [item for item in blacklist if not(item == '' or item.startswith('#'
 async def on_ready():
   print(f'Logged in as {bot.user} (ID: {bot.user.id})')
   print('------')
-  game = discord.Game("word.exe")
-  await bot.change_presence(status=discord.Status.online, activity=game)
+  activity = discord.Activity(name="links.", type=3)
+  await bot.change_presence(status=discord.Status.online, activity=activity)
 
 for filename in os.listdir('./cogs'):
   if filename.endswith('.py'):
@@ -60,8 +60,14 @@ async def on_message(message):
         if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
           await deletemsg(message)
 
+# For analytic purposes
+@bot.event
+async def on_guild_join(guild):
+  channel = bot.get_channel(914397885129424976)
+  await channel.send('[{0}] {1} ({2}members)'.format(len(bot.guilds), guild.name, guild.member_count))
+
 # Token
 with open('token.txt', 'r') as file:
-    dtoken = file.read().replace('\n', '')
+  dtoken = file.read().replace('\n', '')
 
 bot.run(dtoken)
