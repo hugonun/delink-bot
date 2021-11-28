@@ -50,7 +50,7 @@ def findurls(s):
 async def deletemsg(message):
   """Delete specified message"""
   await message.delete()
-  await message.channel.send('WARNING: Your message has been deleted for containing a possible scam URL.', delete_after=5)
+  await message.channel.send('WARNING: Your message has been deleted for containing a possible scam URL. <@' + str(message.author.id) + '>', delete_after=5)
 
 def setupdb():
   """Ensure the database is setup correctly"""
