@@ -17,15 +17,9 @@ https://discord.com/oauth2/authorize?client_id=903114852631969802&scope=bot&perm
 
 Fish Project - https://blog.hyperphish.com/
 
-(TBD) Azeael Phish API - https://phish.azrael.gg/
+(TBD) Azrael Phish API - https://phish.azrael.gg/
 
 ## Requirement
-
-`python3 -m pip install -U discord.py`
-
-`python3 -m pip install tldextract`
-
-or
 
 `python3 -m pip install -r requirements.txt`
 
