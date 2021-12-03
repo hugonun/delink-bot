@@ -12,7 +12,7 @@ intents.members = True
 help_command = commands.DefaultHelpCommand(
     no_category = 'Need some help?'
 )
-bot = commands.Bot(command_prefix='!d ', help_command= help_command, description=description, intents=intents)
+bot = commands.AutoShardedBot(command_prefix='!d ', help_command= help_command, description=description, intents=intents)
 
 setupdb()
 
