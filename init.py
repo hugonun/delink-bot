@@ -30,7 +30,7 @@ whitelist = [item for item in whitelist if not(item == '' or item.startswith('#'
 async def on_ready():
   print(f'Logged in as {bot.user} (ID: {bot.user.id})')
   print('------')
-  activity = discord.Activity(name="links.", type=3)
+  activity = discord.Activity(name="links. | !d help", type=3)
   await bot.change_presence(status=discord.Status.online, activity=activity)
 
 for filename in os.listdir('./cogs'):
