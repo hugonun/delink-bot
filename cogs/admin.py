@@ -41,6 +41,17 @@ class Admin(commands.Cog):
         else:
             await ctx.send('\N{OK HAND SIGN}')
 
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def adminstats(self, ctx):
+        """Show stats."""
+        i = 0
+        x = ''
+        for guild in ctx.bot.guilds:
+            i += 1
+            x += '[{0}] {1} ({2}members) [{3}]'.format(i, guild.name, guild.member_count, guild.id)
+        await ctx.send(x)
+
 def setup(bot):
     """Add class as a cog"""
     bot.add_cog(Admin(bot))
