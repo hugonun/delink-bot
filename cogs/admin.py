@@ -49,7 +49,7 @@ class Admin(commands.Cog):
         x = ''
         for guild in ctx.bot.guilds:
             i += 1
-            x += '[{0}] {1} ({2}members) [{3}]'.format(i, guild.name, guild.member_count, guild.id)
+            x += '[{0}] {1} ({2}members) [{3}]\n'.format(i, guild.name, guild.member_count, guild.id)
         await ctx.send(x)
 
 def setup(bot):
