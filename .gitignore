@@ -131,8 +131,15 @@ dmypy.json
 # Secret Token
 token.txt
 
-# database
+# Database
 delink.db
 
-# directories
+
+# Directories
 .data
+
+# config
+config.yaml
+
+# credentials
+cred.yaml
