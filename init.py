@@ -46,7 +46,7 @@ async def on_message(message):
   if urllist:
     for url in urllist:
       urlextract = tldextract.extract(url)
-      # Filter by TLD
+      # Filter by TLD and common strings
       if urlextract.suffix in ['gift','gifts'] or any(baddomainname in urlextract.domain for baddomainname in ['discordgift','discord-gift','discordnitro','discord-nitro']):
         if url.startswith(('http://', 'https://')):
           if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
@@ -56,6 +56,11 @@ async def on_message(message):
       if checkblacklisturl(message.guild.id,url):
         if urlextract.registered_domain not in whitelist and not checkurl(message.guild.id, urlextract.registered_domain, 'whitelist'):
           await deletemsg(message)
+
+# Check again on edit
+@bot.event
+async def on_message_edit(before, after):
+	await on_message(after)
 
 # For analytic purposes
 @bot.event
