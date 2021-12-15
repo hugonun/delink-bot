@@ -60,6 +60,12 @@ def setupdb():
   cur.execute('''CREATE TABLE IF NOT EXISTS whitelist
   (guild_id int, url text, UNIQUE(guild_id, url))''')
 
+  cur.execute('''CREATE TABLE IF NOT EXISTS guildsettings
+  (guild_id int, logchannel int, mutelogchannel int, muterank int, deletesbeforemute int, UNIQUE(guild_id))''')
+
+  cur.execute('''CREATE TABLE IF NOT EXISTS mutecandidates
+  (user_id int, guild_id int, deletions int, lastdelete int)''')
+
   con.commit()
 
 def inserturl(guild_id, url, table):
