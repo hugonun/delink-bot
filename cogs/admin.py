@@ -48,15 +48,15 @@ class Admin(commands.Cog):
         """Show stats."""
         i = 0
         x = []
-        for guild in ctx.bot.guilds:
-            i += 1
-            x += '[{0}] {1} ({2}members) [{3}]'.format(i, guild.name, guild.member_count, guild.id)
-                
-        paginator = Pag(client=self.bot, pages=[])
+        #for guild in ctx.bot.guilds:
+        #    i += 1
+        #    x += '[{0}] {1} ({2}members) [{3}]'.format(i, guild.name, guild.member_count, guild.id)
+        #        
+        #paginator = Pag(client=self.bot, pages=[])
         
-        cchunk = chunkarray(array=x, size=10)
-        await paginator.chunktopage(chunk=cchunk, color=discord.Color.red(),title="Admin stats", insertbefore="**Servers using the bot:**")
-        await paginator.start(ctx=ctx)
+        #cchunk = chunkarray(array=x, size=10)
+        #await paginator.chunktopage(chunk=cchunk, color=discord.Color.red(),title="Admin stats", insertbefore="**Servers using the bot:**")
+        #await paginator.start(ctx=ctx)
 
 def setup(bot):
     """Add class as a cog"""
