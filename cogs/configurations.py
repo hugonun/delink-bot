@@ -44,12 +44,19 @@ class configurations(commands.Cog):
         if tabletoedit != 'blacklist' and tabletoedit != 'whitelist':
             return await ctx.send(tabletoedit)
         
+        reversetabletoedit = "whitelist" if tabletoedit == "blacklist" else "blacklist"
+        
         url = findurls(msg)[0]
         if not url:
             await ctx.send('No valid URL has been given.')
         else:
-            inserturl(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit)
-            await ctx.send('URL has been added!')
+            if checkurl(ctx.guild.id,tldextract.extract(url).registered_domain,reversetabletoedit):
+                await ctx.send(f'Error: URL `{tldextract.extract(url).registered_domain}` already exists in your {reversetabletoedit}, to remove it, use `{self.bot.command_prefix}removelink {reversetabletoedit} {tldextract.extract(url).registered_domain}`')
+            else:
+                inserturl(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit)
+                await ctx.send(f'URL `{self.bot.command_prefix}` has been added!')
+
+            
 
     @addlink.error
     async def addlink_error(self, ctx, error):
