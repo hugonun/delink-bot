@@ -77,6 +77,10 @@ def deleteurl(guild_id, url, table):
   """Delete a URL from the specified table. EX: blacklist or whitelist"""
   cur.execute('''DELETE FROM %s WHERE guild_id = ? AND url = ?''' % (table), (guild_id,url))
   con.commit()
+  if cur.rowcount < 1:
+    return False
+  else:
+    return True
 
 def retriveurls(guild_id, table):
   """Retrieve all URLs from the specified table. EX: blacklist or whitelist"""
