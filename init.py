@@ -40,7 +40,8 @@ for filename in os.listdir('./cogs'):
 @bot.event
 async def on_message(message):
   await bot.process_commands(message)
-
+  if message.author.bot:
+    return
   # read blacklist.txt and whitelist.txt, and filter from there
   urllist = findurls(message.content)
   if urllist:
