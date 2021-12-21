@@ -49,7 +49,8 @@ class Admin(commands.Cog):
         """Show stats."""
         i = 0
         x = []
-        for guild in ctx.bot.guilds:
+        guildlist = sorted(ctx.bot.guilds, key=lambda x: x.member_count, reverse=True)
+        for guild in guildlist:
             i += 1
             x += ['[{0}] {1} ({2}members) [{3}]'.format(i, guild.name, guild.member_count, guild.id)]
                 
