@@ -22,9 +22,9 @@ class configurations(commands.Cog):
             await ctx.send('No valid URL has been given.')
         else:
             if deleteurl(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit):
-                await ctx.send('URL has been deleted!')
+                await ctx.send(f'URL `{tldextract.extract(url).registered_domain}` has been deleted!')
             else:
-                await ctx.send('URL has not been found.')
+                await ctx.send(f'URL `{tldextract.extract(url).registered_domain}` has not been found.')
     
     @removelink.error
     async def removelink_error(self, ctx, error):
