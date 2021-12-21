@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord
+from utils.paginator import 
 
 class Admin(commands.Cog):
     """Admin-only commands that make the bot dynamic."""
@@ -46,11 +47,16 @@ class Admin(commands.Cog):
     async def adminstats(self, ctx):
         """Show stats."""
         i = 0
-        x = ''
+        x = []
         for guild in ctx.bot.guilds:
             i += 1
-            x += '[{0}] {1} ({2}members) [{3}]\n'.format(i, guild.name, guild.member_count, guild.id)
-        await ctx.send(x)
+            x += '[{0}] {1} ({2}members) [{3}]'.format(i, guild.name, guild.member_count, guild.id)
+                
+        paginator = Pag(client=self.bot, pages=[])
+        
+        cchunk = chunkarray(array=x, size=10)
+        await paginator.chunktopage(chunk=cchunk, color=discord.Color.red(),title="Admin stats", insertbefore="**Servers using the bot:**")
+        await paginator.start(ctx=ctx)
 
 def setup(bot):
     """Add class as a cog"""
