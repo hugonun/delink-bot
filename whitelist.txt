@@ -3,6 +3,7 @@ discord.gift
 discord.gg
 discord.com
 discordapp.com
+discordapp.net
 
 # Friendly domains
 discordresources.com
