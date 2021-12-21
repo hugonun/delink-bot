@@ -106,7 +106,7 @@ def checkblacklisturl(guild_id, url):
       if urltocheck in blacklist:
         return True
   # Check in DB (TODO: Check subdomains too)
-  elif checkurl(guild_id, urlextract.registered_domain, 'blacklist'):
+  if checkurl(guild_id, urlextract.registered_domain, 'blacklist'):
     return True
   # Pass
   else:
