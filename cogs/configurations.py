@@ -15,7 +15,7 @@ class configurations(commands.Cog):
         """Remove a link from the custom white/black list"""
         tabletoedit = whattabletoedit(table=table)
         if tabletoedit != 'blacklist' and tabletoedit != 'whitelist':
-            return await ctx.send(tabletoedit)
+            return await ctx.send('Table does not exist, please use "blacklist" or "whitelist".')
 
         url = findurls(msg)[0]
         if not url:
@@ -40,7 +40,7 @@ class configurations(commands.Cog):
         """Add a link to the custom white/black list"""
         tabletoedit = whattabletoedit(table=table)
         if tabletoedit != 'blacklist' and not tabletoedit != 'whitelist':
-            return await ctx.send(tabletoedit)
+            return await ctx.send('Table does not exist, please use "blacklist" or "whitelist".')
         
         url = findurls(msg)[0]
         if not url:
