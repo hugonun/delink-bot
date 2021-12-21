@@ -43,7 +43,7 @@ def whattabletoedit(table):
 
 def findurls(s):
   """Use a regex to pull URLs from a message"""
-  regex = r"(?i)\b(((https?|ftp|smtp):\/\/)?(www.)?[a-zA-Z0-9_.-]+\.[a-zA-Z0-9_.-]+(\/[a-zA-Z0-9#]+\/?)*/*)$"
+  regex = r"(?i)\b(((https?|ftp|smtp):\/\/)?(www.)?[a-zA-Z0-9_.-]+\.[a-zA-Z0-9_.-]+(\/[a-zA-Z0-9#]+\/?)*\/*)"
   url = re.findall(regex,s)
   return [x[0] for x in url]
 
