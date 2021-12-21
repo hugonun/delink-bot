@@ -54,7 +54,7 @@ class configurations(commands.Cog):
                 await ctx.send(f'Error: URL `{tldextract.extract(url).registered_domain}` already exists in your {reversetabletoedit}, to remove it, use `{self.bot.command_prefix}removelink {reversetabletoedit} {tldextract.extract(url).registered_domain}`')
             else:
                 inserturl(ctx.guild.id,tldextract.extract(url).registered_domain,tabletoedit)
-                await ctx.send(f'URL `{self.bot.command_prefix}` has been added!')
+                await ctx.send(f'URL `{tldextract.extract(url).registered_domain}` has been added!')
 
             
 
