@@ -8,7 +8,7 @@ import os
 description = '''Link filter bot.'''
 
 intents = discord.Intents.default()
-intents.members = True
+intents.messages = True
 help_command = commands.DefaultHelpCommand(
     no_category = 'Need some help?'
 )
