@@ -64,10 +64,10 @@ async def on_message_edit(before, after):
 	await on_message(after)
 
 # For analytic purposes
-@bot.event
-async def on_guild_join(guild):
-  channel = bot.get_channel(914397885129424976)
-  await channel.send('[{0}] {1} ({2}members)'.format(len(bot.guilds), guild.name, guild.member_count))
+#@bot.event
+#async def on_guild_join(guild):
+#  channel = bot.get_channel(914397885129424976)
+#  await channel.send('[{0}] {1} ({2}members)'.format(len(bot.guilds), guild.name, guild.member_count))
 
 # Token
 with open('token.txt', 'r') as file:
