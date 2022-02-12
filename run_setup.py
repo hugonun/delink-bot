@@ -4,7 +4,7 @@ x=input("What is your discord bot Token: ")
 with open('token.txt', 'w') as token_file:
     token_file.write(x)
 
-"""Install all requirred requirements"""
+"""Install all required requirements"""
 os.system("python3 -m pip install -r requirements.txt")
 
 """Start bot"""
