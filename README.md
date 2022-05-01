@@ -13,11 +13,6 @@ A Discord bot to combat phishing links for Steam trades and Discord gifts.
 
 https://discord.com/oauth2/authorize?client_id=903114852631969802&scope=bot&permissions=2147871808
 
-## Supported databases
-
-Fish Project - https://blog.hyperphish.com/
-
-(TBD) Azrael Phish API - https://phish.azrael.gg/
 
 ## Requirement
 
