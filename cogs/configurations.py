@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands.core import has_guild_permissions
 from utils.functions import *
 import tldextract
+import whois
 
 class configurations(commands.Cog):
     """All commands pertaining to configurations like adding or removing links."""
@@ -67,6 +68,15 @@ class configurations(commands.Cog):
             await ctx.send('This command may not be used in DMs.')
         elif isinstance(error, commands.MissingPermissions):
             await ctx.send('You are missing the required permissions.')
+
+    @commands.command()
+    async def whois(self, ctx, domain:str, msg):
+        """Check domain whois information"""
+        url = findurls(domain)[0]
+        w = whois.whois(url)
+        embed = discord.Embed(title=f'Whois Lookup - {url}' , description=w, color=0xffffff)
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     """Add class as a cog"""

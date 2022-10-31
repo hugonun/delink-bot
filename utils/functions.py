@@ -30,8 +30,7 @@ def updateblacklist():
     blacklist = blacklist + r.json()
   threading.Timer(60*60, updateblacklist).start()
 
-updateblacklist()
-  
+updateblacklist()  
 
 def chunkarray(array: list, size: int):
   """Return a list of specified sized lists from a list"""
