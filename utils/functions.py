@@ -1,4 +1,5 @@
 import re
+import threading
 import sqlite3
 import os
 import tldextract
@@ -21,9 +22,16 @@ with open('blacklist.txt', 'r') as file:
 whitelist = [item for item in whitelist if not(item == '' or item.startswith('#'))]
 blacklist = [item for item in blacklist if not(item == '' or item.startswith('#'))]
 
-r = requests.get('https://api.hyperphish.com/gimme-domains')
-if r.status_code == 200:
-  blacklist = blacklist + r.json()
+def updateblacklist():
+  # Threaded function to update blacklist every hour
+  global blacklist
+  r = requests.get('https://api.hyperphish.com/gimme-domains')
+  if r.status_code == 200:
+    blacklist = blacklist + r.json()
+  threading.Timer(60*60, updateblacklist).start()
+
+updateblacklist()
+  
 
 def chunkarray(array: list, size: int):
   """Return a list of specified sized lists from a list"""
