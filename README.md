@@ -11,7 +11,7 @@ A Discord bot to combat phishing links for Steam trades and Discord gifts.
 
 ## Invite link
 
-https://discord.ly/delink
+Invite the bot to your server: https://discord.ly/delink
 
 
 ## Requirement
