@@ -4,10 +4,16 @@ discord.gg
 discord.com
 discordapp.com
 discordapp.net
+discordmerch.com
 
 # Friendly domains
 discordresources.com
 discord.wiki
+discorddb.com
+discord.js.org
+discord.io
+discordjs.guide
+
 
 # .gift and .gifts domains in the top 1M Alexa ranking
 crediter.gift
